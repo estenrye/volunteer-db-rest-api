@@ -1,0 +1,36 @@
+version: '3.7'
+networks:
+  freegeekNetwork:
+    driver: overlay
+    attachable: true
+services:
+  openerpdb:
+    image: freegeektwincities/openerp-postgres:latest
+    ports:
+      - target: 5432
+        published: 5432
+        protocol: tcp
+        mode: ingress
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: P@ssw0rd!
+    networks:
+      - freegeekNetwork
+  openerp:
+    image: freegeektwincities/openerp
+    ports:
+      - target: 8069
+        published: 8069
+        protocol: tcp
+        mode: ingress
+    networks:
+      - freegeekNetwork
+  restapi:
+    image: freegeektwincities/rest-api
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: ingress
+    networks:
+      - freegeekNetwork
